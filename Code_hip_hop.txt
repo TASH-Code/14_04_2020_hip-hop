@@ -1,0 +1,28 @@
+
+library(ggplot2)
+
+setwd("C:/Users/jorge/Datasets/titdytuesday/14_04_2020_hip hop")
+
+# Get the Data
+
+
+polls <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-14/polls.csv')
+rankings <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-04-14/rankings.csv')
+
+#	Check the head
+head(rankings)
+
+# Mean by gender and age.
+df1=aggregate( points~ gender+year,rankings, mean )
+
+# Scatterplot
+theme_set(theme_bw())  				# pre-set the bw theme.
+g <- ggplot(df1, aes(year, points)) + 
+  labs(subtitle="mpg: Trend by Gender",
+       title="Bubble chart")
+
+g + geom_jitter(aes(col=gender, size=points)) + 
+  geom_smooth(aes(col=gender), method="lm", se=F)
+
+
+ggsave("Gender_Trend.png")
